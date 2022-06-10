@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const userRoutes = require('./routes/userRoutes')
+const Conection = require('./routes/conection')
 const User = require('./models/User');
 const Message = require('./models/Message')
 const rooms = ['general', 'tech', 'finance', 'crypto'];
@@ -11,6 +12,7 @@ app.use(express.json());
 app.use(cors());
 
 app.use('/users', userRoutes)
+app.use('/con', Conection)
 require('./connection')
 
 const server = require('http').createServer(app);
@@ -87,11 +89,20 @@ io.on('connection', (socket)=> {
 
 })
 
-
 app.get('/rooms', (req, res)=> {
   res.json(rooms)
 })
 
+app.get('/members',async (req, res)=> {
+  try {
+    const members = await User.find();
+    res.json(members);
+  } catch (e) {
+    console.log(e);
+    res.status(400).send()
+  }
+
+})
 
 server.listen(PORT, ()=> {
   console.log('listening to port', PORT)

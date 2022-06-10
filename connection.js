@@ -1,6 +1,13 @@
 const mongoose = require('mongoose');
 require('dotenv').config();
 
-mongoose.connect(`mongodb+srv://${process.env.DB_USER}:${process.env.DB_PW}@cluster0.s11qz.mongodb.net/chatAppMern?retryWrites=true&w=majority`, ()=> {
+mongoose.connect(`mongodb+srv://rubi:rubi@cluster0.264g2.mongodb.net/muruntauq`, ()=> {
   console.log('connected to mongodb')
 })
+
+
+
+
+
+
+///mongodb+srv://rubi:rubi@cluster0.264g2.mongodb.net/muruntauq`
