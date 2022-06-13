@@ -6,6 +6,9 @@ const User = require('./models/User');
 const Message = require('./models/Message')
 const rooms = ['general', 'tech', 'finance', 'crypto'];
 const cors = require('cors');
+const path = require("path");
+app.use(express.static(path.join(__dirname, "public")));
+
 
 app.use(express.urlencoded({extended: true}));
 app.use(express.json());
@@ -19,10 +22,32 @@ const server = require('http').createServer(app);
 const PORT = 5001;
 const io = require('socket.io')(server, {
   cors: {
-    origin: 'http://localhost:3000',
+    origin: '*',
     methods: ['GET', 'POST']
   }
 })
+//file upload
+
+const multer=require('multer');
+
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, './public/uploads');
+    },
+    filename: function (req, file, cb) {
+        cb(null, file.originalname);
+    }
+});
+const upload1 = multer({ storage: storage }).single("user_file");
+app.post("/upload", (req, res) => {
+    console.log(req.data)
+    upload1(req, res, (err) => {
+        if (err) {
+            res.status(400).send("Something went wrong!");
+        }
+        res.send(req.file);
+    });
+});
 
 
 async function getLastMessagesFromRoom(room){
@@ -110,4 +135,5 @@ app.get('/members',async (req, res)=> {
 server.listen(PORT, ()=> {
   console.log('listening to port', PORT)
 })
+
 
