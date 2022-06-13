@@ -45,6 +45,8 @@ function sortRoomMessagesByDate(messages){
   })
 }
 
+
+
 // socket connection
 
 io.on('connection', (socket)=> {
@@ -70,6 +72,7 @@ io.on('connection', (socket)=> {
     io.to(room).emit('room-messages', roomMessages);
     socket.broadcast.emit('notifications', room)
   })
+
 
   app.delete('/logout', async(req, res)=> {
     try {
@@ -107,3 +110,4 @@ app.get('/members',async (req, res)=> {
 server.listen(PORT, ()=> {
   console.log('listening to port', PORT)
 })
+

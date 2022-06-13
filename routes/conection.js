@@ -39,6 +39,16 @@ router.get('/follower/:id', async(req, res)=> {
   }
 })
 
+router.get('/friends/:id', async(req, res)=> {
+  try {
+    const followersID = req.params.id;
+    let  conection = await  Conection.find({$or:[{userID:followersID,status:"accepted"},{followersID,status:"accepted"}]})
+    res.status(200).json(conection);
+  } catch (e) {
+      res.status(400).json(e.message)
+  }
+})
+
 
 router.delete('/conection/:id', async(req, res)=> {
   try {
